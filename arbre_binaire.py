@@ -86,7 +86,6 @@ class NoeudBinaire:
         if self.a_droit(): res += self.droit.parcours_infixe()
         return res
     
-
     #parcour largeur, le but est de commencer par la racine puis de descendre étage par étage en commencant par la gauche
     def parcours_largeur(self):
         if self.est_vide():
@@ -102,4 +101,22 @@ class NoeudBinaire:
                 file.append(node.gauche)
             if node.a_droit(): 
                 file.append(node.droit)
+        return res
+
+
+#Pour gérer l'affichage
+    def __str__(self, prefix="", est_gauche=True):
+        if self.est_vide():
+            return "Arbre Vide"
+        
+        # On utilise des flèches pour montrer la structure
+        res = f"{prefix}{'|-->' if not est_gauche else '-->'} {self.valeur}\n"
+        
+        # On prépare le décalage pour les enfants
+        nouveau_prefix = prefix + ("|   " if not est_gauche else "    ")
+        
+        if self.a_gauche():
+            res += self.gauche.__str__(nouveau_prefix, True)
+        if self.a_droit():
+            res += self.droit.__str__(nouveau_prefix, False)
         return res
