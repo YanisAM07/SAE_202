@@ -104,7 +104,7 @@ class NoeudBinaire:
         return res
 
 
-#Pour gérer l'affichage
+#affichage de l'abre
     def __str__(self, prefix="", est_gauche=True):
         if self.est_vide():
             return "Arbre Vide"
