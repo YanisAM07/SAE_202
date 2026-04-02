@@ -26,7 +26,7 @@ class NoeudBinaire:
     # Pour savoir ou on en est dans l'arbre
     def est_vide(self):
         # L'arbre est vide si tout est à None
-        return self.valeur is None and self.gauche is None and self.droite is None
+        return self.valeur is None and self.gauche is None and self.droit is None
 
     def est_feuille(self):
         # C'est une feuille s'il n'y a pas d'enfants à gauche et à droite
