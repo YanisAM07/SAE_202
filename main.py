@@ -1,7 +1,9 @@
 from Huffman import Huffman
 
 def test():
-    texte = "J’suis calibré mais j’ai pas d’uniforme, j’baisse mon froc et tu crois aux licornes"
+
+    with open("TEST/testmaisahhrrr/testmaisaaaahhhrrrr/Urus.txt", "r", encoding="utf-8") as f:
+        texte = f.read()
 
     # Étape 1 : fréquences
     freqs = {}
