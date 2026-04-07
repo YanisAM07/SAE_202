@@ -2,7 +2,7 @@ from Huffman import Huffman
 
 def test():
 
-    with open("TEST/testmaisahhrrr/testmaisaaaahhhrrrr/Urus.txt", "r", encoding="utf-8") as f:
+    with open("Urus.txt", "r", encoding="utf-8") as f:
         texte = f.read()
 
     # Étape 1 : fréquences
