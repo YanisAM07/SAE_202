@@ -1,40 +1,48 @@
+import sys
+import os
+from unidecode import unidecode
 from Huffman import Huffman
 
-def test():
+def traiter_fichier(chemin):
+    with open(chemin, "r", encoding="utf-8") as f:
+        texte = unidecode(f.read())
 
-    with open("Urus.txt", "r", encoding="utf-8") as f:
-        texte = f.read()
-
-    # Étape 1 : fréquences
+    # Fréquences
     freqs = {}
     for c in texte:
         freqs[c] = freqs.get(c, 0) + 1
 
-    # Étape 2 : construire l'arbre
+    # Construction de l'arbre
     h = Huffman()
     h.construire(freqs)
 
-    # Étape 3 : générer les codes
+    # Génération des codes
     codes = h.generer_codes()
-    print("Codes de Huffman :")
-    for c, code in codes.items():
-        print(f"  {repr(c)} : {code}")
 
-    # Étape 4 : encoder
+    # Encodage
     texte_code = h.encoder(texte)
-    print(f"\nTexte encodé  : {texte_code}")
 
-    # Étape 5 : décoder (vérification)
+    # Décodage (vérification)
     texte_decode = h.decoder(texte_code)
-    print(f"Texte décodé  : {texte_decode}")
-    print(f"Correct        : {texte == texte_decode}")
 
-    # Taux de compression
+    # Résultats
     taille_avant = len(texte) * 8
     taille_apres = len(texte_code)
-    print(f"\nTaille avant   : {taille_avant} bits")
-    print(f"Taille après   : {taille_apres} bits")
-    print(f"Compression    : {taille_apres / taille_avant * 100:.1f}%")
+    taux = taille_apres / taille_avant * 100
 
-if __name__ == '__main__':
-    test()
+    print(f"\nFichier : {chemin}")
+    print(f"  Taille initiale   : {taille_avant} bits")
+    print(f"  Taille compressée : {taille_apres} bits")
+    print(f"  Taux de compression : {taux:.1f}%")
+    print(f"  Décodage correct  : {texte == texte_decode}")
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Usage : python3 main.py TEST/")
+        sys.exit(1)
+
+    dossier = sys.argv[1]
+    for nom_fichier in os.listdir(dossier):
+        if nom_fichier.endswith(".txt"):
+            chemin = os.path.join(dossier, nom_fichier)
+            traiter_fichier(chemin)

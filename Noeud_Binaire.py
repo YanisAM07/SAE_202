@@ -59,7 +59,7 @@ class NoeudBinaire:
         if self.est_vide():  # condition d'arrêt
             return []
 
-        res = [self.valeur]  # on commence la liste par la valeur dunoeud
+        res = [self.valeur]  # on commence la liste par la valeur du noeud
         if self.a_gauche():
             res += self.gauche.parcours_prefixe()
         if self.a_droit():
