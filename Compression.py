@@ -1,5 +1,10 @@
 from Huffman import Huffman
 
+# Cette fonction renvoie le code binaire de l'encodage ASCCI d'un caractère
+def ascii_vers_base2(c):
+    return format(ord(c), '08b')
+
+
 def compresser_fichier(source, dest_code, dest_table):
 
     # 1. Lire le fichier source
@@ -34,6 +39,8 @@ def compresser_fichier(source, dest_code, dest_table):
     taille_avant = len(texte) * 8          # chaque caractère = 8 bits (ASCII)
     taille_apres = len(texte_code)         # longueur de la chaîne binaire
     taux = taille_apres / taille_avant * 100 if taille_avant > 0 else 0
+
+
 
     print("Compression terminée")
     print(f"→ Fichier source       : {source}")
