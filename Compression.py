@@ -1,8 +1,18 @@
 from Huffman import Huffman
 
+
+#   Ce bout de code crée un dico vide que nous allons remplir via la boucle for ci dessous
+#   la valeur représente le charactère et la clé le nombre de fois
+def calculer_frequences(texte):
+    freqs = {}
+    for c in texte:
+        freqs[c] = freqs.get(c, 0) + 1
+    return freqs
+
+
 # Cette fonction renvoie le code binaire de l'encodage ASCCI d'un caractère
 def ascii_vers_base2(c):
-    return format(ord(c), '08b')
+    return format(ord(c), '08b') # ord transforme sont caractere en code ASCII (08b = 8bits)
 
 
 def compresser_fichier(source, dest_code, dest_table):
@@ -11,10 +21,8 @@ def compresser_fichier(source, dest_code, dest_table):
     with open(source, "r", encoding="utf-8") as f:
         texte = f.read()
 
-    # Calcul des fréquences
-    freqs = {}
-    for c in texte:
-        freqs[c] = freqs.get(c, 0) + 1
+    # Calculer les fréquences des caractères
+    freqs = calculer_frequences(texte)
 
     # Construire l'arbre de Huffman
     h = Huffman()
@@ -35,24 +43,4 @@ def compresser_fichier(source, dest_code, dest_table):
         for caractere, code in codes.items():
             f.write(f"{repr(caractere)}:{code}\n")
 
-    # Calcul des stats de compression
-    taille_avant = len(texte) * 8          # chaque caractère = 8 bits (ASCII)
-    taille_apres = len(texte_code)         # longueur de la chaîne binaire
-    taux = taille_apres / taille_avant * 100 if taille_avant > 0 else 0
 
-
-
-    print("Compression terminée")
-    print(f"→ Fichier source       : {source}")
-    print(f"→ Fichier compressé    : {dest_code}")
-    print(f"→ Table des codes      : {dest_table}")
-    print(f"→ Taille initiale      : {taille_avant} bits")
-    print(f"→ Taille compressée    : {taille_apres} bits")
-    print(f"→ Taux de compression  : {taux:.1f}%")
-
-if __name__ == "__main__":
-    compresser_fichier(
-        "Documents/Urus.txt",
-        "Urus_compresse.bin",
-        "Urus_codes.txt"
-    )

@@ -1,51 +1,43 @@
+# voici les imports autorisé
 import sys
 import os
 from unidecode import unidecode
-from Huffman import Huffman
-from Compression import ascii_vers_base2
 
+
+from Huffman import Huffman
+from Compression import ascii_vers_base2, calculer_frequences
+
+# ouvre le fichier en lecture
 def traiter_fichier(chemin):
     with open(chemin, "r", encoding="utf-8") as f:
         texte = unidecode(f.read())
 
 
     #   Ce bout de code fait appel à ma fonction ascii_vers_base2 qui affiche l'encodage ASCCI de chaque
-    #   caractéristiques du ou des fichiers scannés par notre script
-
+    #   caractère du ou des fichiers scannés par notre script
     ascii_bits = "".join(ascii_vers_base2(c) for c in texte)
     taille_initiale = len(ascii_bits)
-
     print("l'encodage du texte ASCII fonctionne")
 
-
-
-    #    Ce bout de code crée un dico vide que nous allons remplir via la boucle for ci dessous
-    #   la valeur représente le charactère et la clé le nombre de fois
-
-
-    freqs = {}
-    for c in texte:
-        freqs[c] = freqs.get(c, 0) + 1
+    freqs = calculer_frequences(texte)
 
     # Construction de l'arbre
     h = Huffman()
     h.construire(freqs)
 
-    # Génération des codes
+    # On parcourt l’arbre pour créer le code binaire de chaque caractère
     codes = h.generer_codes()
-
 
     # Afficher l'arbre
     h.afficher_arbre()
 
-    # Encodage
-    texte_code = h.encoder(texte)
+    # Permet de vérifier qu'il n'y a pas eu de perte
+    texte_code = h.encoder(texte)  # prend le texte en lettres et le transforme en une suite de bits selon l’arbre Huffman
+    texte_decode = h.decoder(texte_code)  # prend cette suite de bits et reconstruit le texte original
 
-    # Décodage (vérification)
-    texte_decode = h.decoder(texte_code)
 
-    # Résultats
-    taille_avant = len(texte) * 8
+    # Permet de calculer le taux de compression
+    taille_avant = len(texte) * 8 # 1 caractère = 8 bit dans la table ASCII c'est pour ça que l'on multiplie par 8
     taille_apres = len(texte_code)
     taux = taille_apres / taille_avant * 100
 
@@ -65,13 +57,18 @@ def traiter_fichier(chemin):
     # print(ascii_bits)
 
 
-# en gros
+# Ce bloc permet l'exécution de notre algorithme avec des vérifications
+# Il vérifie qu'un dossier est bien passé en argument sinon il affiche une aide
+# Il parcourt tous les fichiers du dossier et ne garde que ceux qui finissent par .txt
+# Il construit ensuite le chemin complet de chaque fichier texte
+# Et enfin il applique notre compression sur chaque fichier du dossier.
+
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage : python3 main.py input/")
+        print("Usage : python3 main.py TEST/")
         sys.exit(1)
 
-    dossier = sys.argv[1]
+    dossier = sys.argv[1] # en gros, ça contient ce que nous écrivons après python3 main.py pour exécuter le code
     for nom_fichier in os.listdir(dossier):
         if nom_fichier.endswith(".txt"):
             chemin = os.path.join(dossier, nom_fichier)
