@@ -71,3 +71,43 @@ class Huffman:
                 res += noeud.s  # noeud.s = le caractère stocké dans le tuple
                 noeud = self.racine
         return res
+
+    def afficher_arbre(self, noeud=None, prefixe="", est_racine=True, direction="", code_courant="" ):
+        """
+        Affiche l'arbre de Huffman avec les branches gauche donc 0 et droite donc 1 ainsi que le code
+         binaire sur chaque feuille.
+         on aura donc le caractère suivie de la fréquence et de son code binaire
+        Appel : h.afficher_arbre()
+        """
+        if noeud is None:
+            if est_racine:
+                noeud = self.racine
+            else:
+                return
+
+        # on ajoute le bit au code
+        if direction == "gauche":
+            code_courant += "0"
+        elif direction == "droit":
+            code_courant += "1"
+
+        # Étiquette du nœud
+        if noeud.est_feuille():
+            label = f"['{noeud.s}' : {noeud.es}]  →  {code_courant}"  # ← code affiché ici
+        else:
+            label = f"({noeud.es})"
+
+        # Affichage de la ligne
+        if est_racine:
+            print(f"RACINE {label}")
+        else:
+            fleche = "0──>" if direction == "gauche" else "1──>"
+            print(f"{prefixe}{fleche} {label}")
+
+        # Récursion
+        if not noeud.est_feuille():
+            nouveau_prefixe = prefixe + ("    " if direction == "droit" else "|   ")
+            if noeud.get_gauche():
+                self.afficher_arbre(noeud.get_gauche(), nouveau_prefixe, False, "gauche", code_courant)
+            if noeud.get_droit():
+                self.afficher_arbre(noeud.get_droit(), nouveau_prefixe, False, "droit", code_courant)

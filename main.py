@@ -34,6 +34,10 @@ def traiter_fichier(chemin):
     # Génération des codes
     codes = h.generer_codes()
 
+
+    # Afficher l'arbre
+    h.afficher_arbre()
+
     # Encodage
     texte_code = h.encoder(texte)
 
@@ -60,6 +64,8 @@ def traiter_fichier(chemin):
 
     # print(ascii_bits)
 
+
+# en gros
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage : python3 main.py input/")
