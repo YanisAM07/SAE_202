@@ -17,7 +17,6 @@ def traiter_fichier(chemin):
     #   caractère du ou des fichiers scannés par notre script
     ascii_bits = "".join(ascii_vers_base2(c) for c in texte)
     taille_initiale = len(ascii_bits)
-    print("l'encodage du texte ASCII fonctionne")
 
     freqs = calculer_frequences(texte)
 
@@ -45,6 +44,7 @@ def traiter_fichier(chemin):
     print(f"  Taille initiale   : {taille_avant} bits")
     print(f"  Taille compressée : {taille_apres} bits")
     print(f"  Taux de compression : {taux:.1f}%")
+    print("l'encodage du texte ASCII fonctionne")
     print(f"  Décodage correct  : {texte == texte_decode}")
 
 
